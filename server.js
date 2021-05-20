@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const app = express();
 const mongoose = require('mongoose');
 
+const postRoute = require("./routes/post")
+
 dotenv.config();
 // Connnect to DB
 
@@ -21,6 +23,7 @@ app.use(express.json());
 // Routes Midlleware
 
 app.use('/api/user', authRoute);
+app.use('/api/post', postRoute);
 
 
 
