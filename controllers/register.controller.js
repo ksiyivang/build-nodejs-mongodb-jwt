@@ -3,6 +3,8 @@
 const User = require("../models/user.model");
 const bcrypt = require('bcryptjs');
 const { registerValidation, loginValidation } = require("../middleware/validation");
+const jwt = require("jsonwebtoken")
+
 
 
 exports.register = async (req, res) => {
@@ -56,8 +58,15 @@ exports.login = async (req, res) => {
 
     // password is correct
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if (!validPass) return res.status(400).send("Invalid password")
+    if (!validPass) return res.status(400).send("Invalid password");
 
-    res.send('Logined In')
+    // Create and assin a token
+
+    const token = jwt.sign({ _id: user._id }, process.env.TOKEN_SECRET);
+
+    res.header('auth-token', token).send({ token: token })
+
+
+    // res.send('Logined In');
 }
 
